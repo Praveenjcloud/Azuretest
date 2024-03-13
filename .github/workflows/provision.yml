@@ -5,7 +5,7 @@ on:
       - main 
 env:
   LOCATION: "eastus" 
-  NAME: "mydeployment" 
+  NAME: "mydeployment1" 
 
 jobs:
   deploy:
