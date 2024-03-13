@@ -18,4 +18,8 @@ jobs:
 
       - name: Create Deployment
         run: |
-          az deployment sub create --name $NAME --deployment --location $LOCATION --template-file './infra/main.bicep' --parameters basename=$NAME location=$LOCATION
+          az deployment sub create \
+            --name ${NAME} \
+            --location ${LOCATION} \
+            --template-file './infra/main.bicep' \
+            --parameters '{"basename": "${NAME}", "location": "${LOCATION}"}'
