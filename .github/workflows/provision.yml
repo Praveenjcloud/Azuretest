@@ -1,36 +1,24 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
+# Copyright 2022 (c) Microsoft Corporation.
+# Licensed under the MIT license.
+name: Azure Deployment Workflow
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Trigger the workflow only on pushes to the main branch
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+env:
+  LOCATION: "eastus"  # Default value for location
+  NAME: "mydeployment"  # Default value for name
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Azure CLI Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Create Deployment
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          az deployment sub create --name ${{ env.NAME }}-deployment --location ${{ env.LOCATION }} --template-file ./infra/main.bicep --parameters basename=${{ env.NAME }} location=${{ env.LOCATION }}
