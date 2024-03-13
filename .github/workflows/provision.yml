@@ -1,14 +1,11 @@
-# Copyright 2022 (c) Microsoft Corporation.
-# Licensed under the MIT license.
 name: Azure Deployment Workflow
 on:
   push:
     branches:
-      - main  # Trigger the workflow only on pushes to the main branch
-
+      - main 
 env:
-  LOCATION: "eastus"  # Default value for location
-  NAME: "mydeployment"  # Default value for name
+  LOCATION: "eastus" 
+  NAME: "mydeployment" 
 
 jobs:
   deploy:
