@@ -6,6 +6,7 @@ on:
 env:
   LOCATION: "eastus" 
   NAME: "mydeployment1" 
+  AZURE_RESOURCEGROUP_NAME: "test"
 
 jobs:
   deploy:
@@ -18,8 +19,5 @@ jobs:
 
       - name: Create Deployment
         run: |
-          az deployment sub create \
-            --name ${NAME} \
-            --location ${LOCATION} \
-            --template-file './infra/main.bicep' \
-            --parameters '{"basename": "${NAME}", "location": "${LOCATION}"}'
+          az group create --name $AZURE_RESOURCEGROUP_NAME --location $LOCATION
+          az deployment group create --name ${NAME} --location ${LOCATION} --template-file './infra/main.bicep' --parameters basename=${NAME} location=${LOCATION}
